@@ -21,8 +21,9 @@ function dibujarPlato(): string {
     { length: estado.pupusasRestantes },
     () => '<span class="pupusa" aria-hidden="true"></span>',
   ).join('')
+  const clasePeligro = estado.pupusasRestantes === 1 ? ' plato--peligro' : ''
 
-  return `<div class="plato" role="img" aria-label="Plato con ${estado.pupusasRestantes} pupusas">
+  return `<div class="plato${clasePeligro}" role="img" aria-label="Plato con ${estado.pupusasRestantes} pupusas">
     <div class="pupusas">${pupusas}</div>
   </div>`
 }
@@ -146,10 +147,13 @@ contenedor.addEventListener('change', (evento: Event) => {
 })
 
 window.addEventListener('keydown', (evento: KeyboardEvent) => {
-  if (evento.target instanceof HTMLSelectElement) return
   if (evento.key.toLowerCase() === 'r') {
     reiniciar()
-  } else if (!mostrarInicio && ['1', '2', '3'].includes(evento.key)) {
+  } else if (
+    !(evento.target instanceof HTMLSelectElement) &&
+    !mostrarInicio &&
+    ['1', '2', '3'].includes(evento.key)
+  ) {
     jugar(Number(evento.key))
   }
 })
